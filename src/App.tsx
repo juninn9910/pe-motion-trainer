@@ -5,6 +5,7 @@ import { TeacherPanel } from './components/TeacherPanel';
 import { TrainerView, type DebugInfo } from './components/TrainerView';
 import { haptics, joycons, sfx } from './feedback';
 import { useCamera } from './hooks/useCamera';
+import { useJoyCons } from './hooks/useJoyCons';
 import { useSettings } from './hooks/useSettings';
 import type { BodyProfile } from './pose/calibration';
 
@@ -68,9 +69,7 @@ export default function App() {
 
       {started && (
         <div className="fixed right-3 top-3 z-20 flex gap-2">
-          <IconButton label="조이콘 진단" onClick={() => setDiagOpen(true)}>
-            🎮
-          </IconButton>
+          <JoyConPill onClick={() => setPanelOpen(true)} />
           <IconButton label="교사 설정" onClick={() => setPanelOpen((o) => !o)}>
             ⚙️
           </IconButton>
@@ -92,6 +91,31 @@ export default function App() {
       />
       <DiagnosticsModal open={diagOpen} onClose={() => setDiagOpen(false)} swingLevel={settings.swingLevel} />
     </div>
+  );
+}
+
+/** 오른쪽 위 조이콘 상태 표시. 하나라도 안 붙어 있으면 눈에 띄게, 둘 다 붙으면 흐리게 */
+function JoyConPill({ onClick }: { onClick: () => void }) {
+  const { left, right, supported } = useJoyCons();
+  if (!supported) return null;
+  const l = !!left?.ready;
+  const r = !!right?.ready;
+  const all = l && r;
+  const dot = (on: boolean) => <span className={`inline-block h-3 w-3 rounded-full ${on ? 'bg-emerald-400' : 'bg-neutral-500'}`} />;
+  return (
+    <button
+      onClick={onClick}
+      title="조이콘 연결"
+      className={`flex h-12 items-center gap-2 rounded-full px-4 text-base font-bold ring-2 transition ${
+        all ? 'bg-black/50 opacity-60 ring-white/20 hover:opacity-100' : 'bg-sky-600/90 ring-sky-300 hover:bg-sky-500'
+      }`}
+    >
+      <span className="text-xl">🎮</span>
+      {all ? '' : '조이콘 연결'}
+      <span className="flex items-center gap-1 text-xs font-semibold">
+        L {dot(l)} R {dot(r)}
+      </span>
+    </button>
   );
 }
 

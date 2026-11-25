@@ -5,6 +5,7 @@ import type { Settings } from '../types';
 import type { BodyProfile } from '../pose/calibration';
 import { PART_KEYS, PART_LABEL, SEG_KEYS, type SegKey } from '../pose/landmarks';
 import { PRESET_ORDER, PRESETS } from '../pose/presets';
+import { JoyConConnect } from './JoyConConnect';
 import type { DebugInfo } from './TrainerView';
 
 interface Props {
@@ -54,6 +55,10 @@ export function TeacherPanel(p: Props) {
       </header>
 
       <div className="flex-1 space-y-6 overflow-y-auto px-5 py-4">
+        <Section title="조이콘">
+          <JoyConConnect size="sm" />
+        </Section>
+
         <Section title="동작">
           <div className="grid grid-cols-2 gap-2">
             {PRESET_ORDER.map((id) => (
