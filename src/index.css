@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: #000;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+}
+
+/* 진동이 울릴 때 손 아이콘이 '부르르' */
+@keyframes hpulse {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.18) rotate(-6deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(6deg);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.hpulse {
+  animation: hpulse 0.35s ease-out;
+}
+
+/* 성공·타격 아이콘 튀어나오기 */
+@keyframes pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+.pop {
+  animation: pop 0.35s ease-out both;
+}
+
+/* 교사 패널 슬라이더: 손가락으로도 잡기 쉽게 */
+.big-range {
+  accent-color: #38bdf8;
+  height: 2rem;
+}
